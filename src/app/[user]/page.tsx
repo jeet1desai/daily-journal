@@ -1,78 +1,62 @@
+"use client";
+
 import React from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import Sidebar from "@/components/sidebar";
+import BottomNavigation from "@/components/bottom-navigation";
+import JournalCard from "@/components/journal-card";
+import { Button } from "@/components/ui/button";
 
 const UserBlog = () => {
   return (
     <div className="flex h-screen overflow-hidden">
-      <div className="w-[20%] py-10 px-4 flex flex-col justify-between items-center">
-        <div className="flex flex-col justify-center items-center gap-[20px]">
-          <Avatar className="h-20 w-20">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div className="text-center">
-            <h1 className="text-gray-gray1k font-semibold text-base">Jeet Desai</h1>
-            <span className="text-gray-gray5 text-xs">Joined at 12 Jan 2023</span>
+      <Sidebar />
+      <div className="w-[100%] md:w-[70%] lg:w-[60%] border-l-2 border-r-2 overflow-auto">
+        <div className="sticky top-0 bg-white dark:bg-background">
+          <div className="px-5 py-8">
+            <h1 className="text-black text-3xl font-bold dark:text-primary">Good Morning,</h1>
+            <p className="text-black text-2xl dark:text-primary">12 Jan 1212</p>
+          </div>
+          <Separator />
+          <div className="my-5 mx-4 flex gap-[30px]">
+            <Input placeholder="Search by title" type="text" />
+            <Button>Add</Button>
+          </div>
+          <Separator />
+        </div>
+        <div className="px-5 my-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 grid-flow-row gap-6">
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
+            <JournalCard />
           </div>
         </div>
-        <div>
-          <span className="text-gray-gray5 text-xs">© 2024 Jeet Desai • v0.0.1</span>
-        </div>
+        <BottomNavigation />
       </div>
-      <div className="w-[60%] border-l-2 border-r-2 py-10 px-4 overflow-auto">
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-        <h1>1</h1>
-      </div>
-      <div className="w-[20%] p-10">
+      <div className="hidden lg:block w-[20%] p-5">
         <div className="flex justify-left">
           <Calendar mode="single" className="rounded-md border shadow" />
         </div>

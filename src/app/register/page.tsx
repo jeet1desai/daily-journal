@@ -23,7 +23,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <div className="w-full lg:w-[50%] xl:w-[50%] h-full flex justify-center items-center	flex-col p-10 gap-6">
+      <div className="w-full lg:w-[50%] xl:w-[50%] h-full flex justify-center items-center flex-col p-10 gap-6">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
           <p className="text-sm text-muted-foreground">Enter your details to create your account</p>
