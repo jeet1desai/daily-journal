@@ -11,7 +11,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="hidden md:flex md:w-[30%] lg:w-[20%] py-5 px-4 flex flex-col justify-between items-center">
+    <div className="hidden md:flex md:w-[40%] lg:w-[20%] py-5 px-4 flex flex-col justify-between items-center">
       <div className="w-full lg:w-[80%] flex flex-col justify-start items-center gap-[20px]">
         <Avatar className="h-20 w-20">
           <AvatarImage src="https://github.com/shadcn.png" />

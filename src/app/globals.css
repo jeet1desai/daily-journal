@@ -61,3 +61,21 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+.rdp tr {
+  gap: 5px;
+}
+
+.rdp tr td button {
+  border-radius: 50%;
+}
+
+.public-DraftEditor-content {
+  height: 250px;
+  min-height: 250px;
+  max-height: 250px;
+}
+
+.public-DraftEditor-content > div > div {
+  margin: 0 !important;
+}
