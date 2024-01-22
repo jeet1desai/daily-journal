@@ -41,7 +41,7 @@ const Daily = ({ isOpen, handleOpen }: any) => {
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <RichTextEditor className="w-full" toolbarConfig={toolbarConfig} value={note} onChange={(val) => setNote(val)} />
+          <RichTextEditor className="w-full dark:bg-background" toolbarConfig={toolbarConfig} value={note} onChange={(val) => setNote(val)} />
         </div>
         <DialogFooter className="sm:justify-end">
           <Button type="button" variant="secondary">

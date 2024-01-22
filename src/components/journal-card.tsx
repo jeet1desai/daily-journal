@@ -7,7 +7,7 @@ import { DotsVerticalIcon } from "@radix-ui/react-icons";
 const JournalCard = () => {
   return (
     <Card>
-      <CardHeader className="flex justify-between items-center flex-row py-5">
+      <CardHeader className="flex justify-between items-center flex-row py-3">
         <CardTitle className="text-ellipsis overflow-hidden line-clamp-1">12 Jan 1212</CardTitle>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
