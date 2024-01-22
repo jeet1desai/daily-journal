@@ -8,9 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
 const Appearance = () => {
-  const [theme, setTheme] = useState("light");
+  const { theme, setTheme } = useTheme();
+
+  const [c_theme, setCTheme] = useState(theme ?? "light");
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -33,23 +36,23 @@ const Appearance = () => {
             <div>
               <div className="flex gap-[20px] mb-5">
                 <Button
-                  onClick={() => setTheme("light")}
+                  onClick={() => setCTheme("light")}
                   className={cn("bg-white text-black hover:bg-white hover:text-black dark:border dark:border-white dark:bg-black dark:text-white", {
-                    "bg-black text-white hover:bg-black hover:text-white dark:bg-white dark:text-black": theme === "light",
+                    "bg-black text-white hover:bg-black hover:text-white dark:bg-white dark:text-black": c_theme === "light",
                   })}
                 >
                   <SunIcon />
                 </Button>
                 <Button
-                  onClick={() => setTheme("dark")}
+                  onClick={() => setCTheme("dark")}
                   className={cn("bg-white text-black hover:bg-white hover:text-black dark:border dark:border-white dark:bg-black dark:text-white", {
-                    "bg-black text-white hover:bg-black hover:text-white dark:bg-white dark:text-black": theme === "dark",
+                    "bg-black text-white hover:bg-black hover:text-white dark:bg-white dark:text-black": c_theme === "dark",
                   })}
                 >
                   <MoonIcon />
                 </Button>
               </div>
-              <Button onClick={() => localStorage.setItem("theme", theme)}>Update preferences</Button>
+              <Button onClick={() => setTheme(c_theme)}>Update preferences</Button>
             </div>
           </div>
         </div>
