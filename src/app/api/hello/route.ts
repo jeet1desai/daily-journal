@@ -10,10 +10,10 @@ export async function GET(request: NextRequest) {
   return Response.json("Hello");
 }
 
-export async function GET_ONE(_request: Request, { params }: { params: { id: string } }) {
-  redirect("/login");
-  // return new Response("Hello");
-}
+// export async function GET_ONE(_request: Request, { params }: { params: { id: string } }) {
+//   redirect("/login");
+//   // return new Response("Hello");
+// }
 
 export async function POST(request: Request) {
   return Response.json("Hello", {
