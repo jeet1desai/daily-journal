@@ -1,10 +1,44 @@
+"use client";
+
+import React, { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import { Form, Formik } from "formik";
+import axios from "axios";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const router = useRouter();
+
+  const [form, _setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const formValidation: any = Yup.object().shape({
+    email: Yup.string().required("Required"),
+    password: Yup.string().required("Required"),
+  });
+
+  const handleSubmit = async (values: any) => {
+    try {
+      setLoading(true);
+      const response = await axios.post("./api/auth/login", values);
+      toast.success(response.data.message);
+      router.push(`/${response.data.userId}`);
+    } catch (error: any) {
+      setLoading(false);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex relative h-screen">
       <Link href="/register" rel="noreferrer" className={buttonVariants({ variant: "outline" }) + " border-0 top-8 right-8 absolute disabled:opacity-50 disabled:opacity-50 hover:bg-accent"}>
@@ -29,11 +63,33 @@ const Login = () => {
           <p className="text-sm text-muted-foreground">Enter your details to Login</p>
         </div>
         <div className="w-[350px]">
-          <form className="grid gap-2">
-            <Input placeholder="name@emaple.com" type="text" />
-            <Input placeholder="********" type="password" />
-            <Button type="submit">Submit</Button>
-          </form>
+          <Formik
+            enableReinitialize
+            initialValues={form}
+            validationSchema={formValidation}
+            onSubmit={(values, { resetForm }) => {
+              handleSubmit(values);
+              resetForm();
+            }}
+          >
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
+              return (
+                <Form className="grid gap-2" onSubmit={handleSubmit}>
+                  <div>
+                    <Input value={values.email} onChange={handleChange} onBlur={handleBlur} name="email" placeholder="name@emaple.com" type="text" />
+                    {errors.email && touched.email && <span className="text-red-600 text-xs">{errors.email}</span>}
+                  </div>
+                  <div>
+                    <Input value={values.password} onChange={handleChange} onBlur={handleBlur} name="password" placeholder="********" type="password" />
+                    {errors.password && touched.password && <span className="text-red-600 text-xs">{errors.password}</span>}
+                  </div>
+                  <Button disabled={loading} type="submit">
+                    Submit
+                  </Button>
+                </Form>
+              );
+            }}
+          </Formik>
           <Separator className="my-4" />
           <div className="text-center">
             <span className="text-sm text-muted-foreground">By clicking submit, you agree to our Terms of Service and Privacy Policy.</span>
