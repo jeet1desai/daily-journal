@@ -7,19 +7,40 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter();
+
   const [form, _setForm] = useState({
     name: "",
     email: "",
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const formValidation: any = Yup.object().shape({
     name: Yup.string().required("Required"),
     email: Yup.string().required("Required").email("Enter valid email"),
     password: Yup.string().required("Required"),
   });
+
+  const handleSubmit = async (values: any) => {
+    try {
+      setLoading(true);
+      const response = await axios.post("./api/auth/signup", values);
+      toast.success(response.data.message)
+      router.push("/login");
+    } catch (error: any) {
+      setLoading(false);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex relative h-screen">
@@ -50,7 +71,8 @@ const Register = () => {
             initialValues={form}
             validationSchema={formValidation}
             onSubmit={(values, { resetForm }) => {
-              console.log(values);
+              handleSubmit(values);
+              resetForm();
             }}
           >
             {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => {
@@ -68,7 +90,9 @@ const Register = () => {
                     <Input value={values.password} onChange={handleChange} onBlur={handleBlur} name="password" placeholder="********" type="password" />
                     {errors.password && touched.password && <span className="text-red-600 text-xs">{errors.password}</span>}
                   </div>
-                  <Button type="submit">Submit</Button>
+                  <Button disabled={loading} type="submit">
+                    Submit
+                  </Button>
                 </Form>
               );
             }}
