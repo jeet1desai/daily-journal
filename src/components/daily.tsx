@@ -30,7 +30,7 @@ const Daily = ({ isOpen, handleOpen }: any) => {
     <Dialog open={isOpen} onOpenChange={() => handleOpen(false)}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle>Today's Entry</DialogTitle>
+          <DialogTitle>Today&apos;s Entry</DialogTitle>
         </DialogHeader>
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
