@@ -36,7 +36,7 @@ const Login = () => {
           </form>
           <Separator className="my-4" />
           <div className="text-center">
-            <span className="text-sm text-muted-foreground">By clicking continue, you agree to our Terms of Service and Privacy Policy.</span>
+            <span className="text-sm text-muted-foreground">By clicking submit, you agree to our Terms of Service and Privacy Policy.</span>
           </div>
         </div>
       </div>
