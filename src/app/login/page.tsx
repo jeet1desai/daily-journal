@@ -30,6 +30,7 @@ const Login = () => {
       setLoading(true);
       const response = await axios.post("./api/auth/login", values);
       toast.success(response.data.message);
+      localStorage.setItem("user", response.data.userId);
       router.push(`/${response.data.userId}`);
     } catch (error: any) {
       setLoading(false);

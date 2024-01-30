@@ -1,13 +1,19 @@
 "use client";
 
 import React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const BottomNavigation = () => {
+  const router = useRouter();
   const pathname = usePathname();
+
+  const userId = localStorage.getItem("user");
+  if (!userId) {
+    router.push(`/login`);
+  }
 
   return (
     <div className="sticky bottom-0 bg-white dark:dark:bg-background md:hidden">
@@ -15,30 +21,30 @@ const BottomNavigation = () => {
       <div className="my-5 mx-4 bg-white dark:dark:bg-background">
         <div className="grid grid-flow-col auto-col-max text-sm gap-2">
           <Link
-            href={`/1`}
+            href={`/${userId}`}
             className={cn("flex justify-center items-center rounded-md p-2 bg-muted", {
-              "bg-primary": pathname === `/1`,
-              "text-secondary": pathname === `/1`,
+              "bg-primary": pathname === `/${userId}`,
+              "text-secondary": pathname === `/${userId}`,
             })}
             rel="noreferrer"
           >
             Home
           </Link>
           <Link
-            href={`/1/account`}
+            href={`/${userId}/account`}
             className={cn("flex justify-center items-center rounded-md p-2 bg-muted", {
-              "bg-primary": pathname === `/1/account`,
-              "text-secondary": pathname === `/1/account`,
+              "bg-primary": pathname === `/${userId}/account`,
+              "text-secondary": pathname === `/${userId}/account`,
             })}
             rel="noreferrer"
           >
             Account
           </Link>
           <Link
-            href={`/1/appearance`}
+            href={`/${userId}/appearance`}
             className={cn("flex justify-center items-center rounded-md p-2 bg-muted", {
-              "bg-primary": pathname === `/1/appearance`,
-              "text-secondary": pathname === `/1/appearance`,
+              "bg-primary": pathname === `/${userId}/appearance`,
+              "text-secondary": pathname === `/${userId}/appearance`,
             })}
             rel="noreferrer"
           >

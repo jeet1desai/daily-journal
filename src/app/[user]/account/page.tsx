@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 const Account = () => {
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar />
+      <Sidebar  />
       <div className="w-[100%] md:w-[70%] lg:w-[80%] border-l-2 border-r-2 h-full">
         <div className=" overflow-hidden">
           <div className="sticky top-0 bg-white dark:bg-background">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,22 @@ import Daily from "@/components/daily";
 
 const UserBlog = () => {
   const [isDialogDialogOpen, setDailyDialog] = useState(false);
+  const [timeOfDay, setTimeOfDay] = useState('');
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+
+    if (currentHour >= 5 && currentHour < 12) {
+      setTimeOfDay('Morning');
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setTimeOfDay('Afternoon');
+    } else {
+      setTimeOfDay('Evening');
+    }
+    setCurrentDate(currentDate)
+  }, []);
 
   return (
     <>
@@ -20,8 +36,8 @@ const UserBlog = () => {
         <div className="w-[100%] md:w-[60%] lg:w-[60%] border-l-2 border-r-2 overflow-auto">
           <div className="sticky top-0 bg-white dark:bg-background">
             <div className="px-5 py-8">
-              <h1 className="text-black text-3xl font-bold dark:text-primary">Good Morning,</h1>
-              <p className="text-black text-2xl dark:text-primary">12 Jan 1212</p>
+              <h1 className="text-black text-3xl font-bold dark:text-primary mb-2">Good {timeOfDay},</h1>
+              <p className="text-black text-xl dark:text-primary">{currentDate.toDateString()}</p>
             </div>
             <Separator />
             <div className="my-5 mx-4 flex gap-[30px]">

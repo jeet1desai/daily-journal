@@ -14,8 +14,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: [true, "password is required"],
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   profilePicture: {
     type: String,
+    default: "",
   },
 });
 
