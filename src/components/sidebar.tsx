@@ -1,20 +1,43 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Calendar } from "./ui/calendar";
+import { Button } from "./ui/button";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const userId = localStorage.getItem("user");
-  if (!userId) {
-    router.push(`/login`);
-  }
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem("user");
+
+      if (!userId) {
+        router.push(`/login`);
+      } else {
+        setUserId(userId)
+      }
+    }
+  }, [router]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.get("./api/auth/logout");
+      toast.success(response.data.message);
+      localStorage.clear();
+      router.push(`/`);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div className="hidden md:flex md:w-[40%] lg:w-[20%] py-5 px-4 flex flex-col justify-between items-center">
@@ -64,6 +87,7 @@ const Sidebar = () => {
       </div>
       <div className="flex flex-col items-center gap-[20px]">
         <Calendar mode="single" className="lg:hidden rounded-md border shadow" />
+        <Button onClick={handleLogout}>Logout</Button>
         <span className="text-gray-gray5 text-xs">© 2024 Jeet Desai • v0.0.1</span>
       </div>
     </div>

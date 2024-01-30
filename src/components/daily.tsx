@@ -8,7 +8,7 @@ import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/react/style.css";
 import { useTheme } from "next-themes";
 
-const initialContent: string | null = localStorage.getItem("editorContent");
+const initialContent: string | null = "";
 
 const Daily = ({ isOpen, handleOpen }: any) => {
   const { theme } = useTheme();
@@ -25,7 +25,7 @@ const Daily = ({ isOpen, handleOpen }: any) => {
   });
 
   return (
-    <Dialog open={true} onOpenChange={() => handleOpen(false)}>
+    <Dialog open={isOpen} onOpenChange={() => handleOpen(false)}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>Today&apos;s Entry</DialogTitle>
