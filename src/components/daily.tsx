@@ -3,31 +3,29 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import RichTextEditor from "react-rte";
+import { BlockNoteEditor } from "@blocknote/core";
+import { BlockNoteView, useBlockNote } from "@blocknote/react";
+import "@blocknote/react/style.css";
+import { useTheme } from "next-themes";
 
-const toolbarConfig: any = {
-  display: ["INLINE_STYLE_BUTTONS", "BLOCK_TYPE_BUTTONS", "LINK_BUTTONS", "BLOCK_TYPE_DROPDOWN", "HISTORY_BUTTONS"],
-  INLINE_STYLE_BUTTONS: [
-    { label: "Bold", style: "BOLD", className: "custom-css-class" },
-    { label: "Italic", style: "ITALIC" },
-    { label: "Underline", style: "UNDERLINE" },
-  ],
-  BLOCK_TYPE_DROPDOWN: [
-    { label: "Normal", style: "unstyled" },
-    { label: "Heading Large", style: "header-one" },
-    { label: "Heading Medium", style: "header-two" },
-    { label: "Heading Small", style: "header-three" },
-  ],
-  BLOCK_TYPE_BUTTONS: [
-    { label: "UL", style: "unordered-list-item" },
-    { label: "OL", style: "ordered-list-item" },
-  ],
-};
+const initialContent: string | null = localStorage.getItem("editorContent");
 
 const Daily = ({ isOpen, handleOpen }: any) => {
-  const [note, setNote] = useState(RichTextEditor.createValueFromString("", "html"));
+  const { theme } = useTheme();
+
+  const editor: BlockNoteEditor = useBlockNote({
+    // If the editor contents were previously saved, restores them.
+    initialContent: initialContent ? JSON.parse(initialContent) : undefined,
+    // Serializes and saves the editor contents to local storage.
+    onEditorContentChange: (editor) => {
+      console.log(JSON.stringify(editor.topLevelBlocks));
+
+      localStorage.setItem("editorContent", JSON.stringify(editor.topLevelBlocks));
+    },
+  });
+
   return (
-    <Dialog open={isOpen} onOpenChange={() => handleOpen(false)}>
+    <Dialog open={true} onOpenChange={() => handleOpen(false)}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>Today&apos;s Entry</DialogTitle>
@@ -40,8 +38,11 @@ const Daily = ({ isOpen, handleOpen }: any) => {
             <Input id="title" placeholder="12/12/1212 or Title" />
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <RichTextEditor className="w-full dark:bg-background" toolbarConfig={toolbarConfig} value={note} onChange={(val) => setNote(val)} />
+        <div className="flex items-center space-x-2 rounded-md border py-1 shadow-sm">
+          <BlockNoteView
+            editor={editor}
+            theme={theme === "dark" ? "dark" : "light"}
+          />
         </div>
         <DialogFooter className="sm:justify-end">
           <Button type="button" variant="secondary">
