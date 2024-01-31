@@ -9,30 +9,52 @@ import BottomNavigation from "@/components/bottom-navigation";
 import JournalCard from "@/components/journal-card";
 import { Button } from "@/components/ui/button";
 import Daily from "@/components/daily";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const UserBlog = () => {
   const [isDialogDialogOpen, setDailyDialog] = useState(false);
-  const [timeOfDay, setTimeOfDay] = useState('');
+  const [timeOfDay, setTimeOfDay] = useState("");
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
+  const [user, setUser] = useState({
+    name: "",
+    profilePicture: "",
+    createdAt: "",
+  });
+
+  const getAccountDetails = async () => {
+    try {
+      const response = await axios.get("../api/user");
+      setUser((prev) => ({
+        ...prev,
+        ...response.data.user,
+      }));
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
+    getAccountDetails();
+
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
 
     if (currentHour >= 5 && currentHour < 12) {
-      setTimeOfDay('Morning');
+      setTimeOfDay("Morning");
     } else if (currentHour >= 12 && currentHour < 18) {
-      setTimeOfDay('Afternoon');
+      setTimeOfDay("Afternoon");
     } else {
-      setTimeOfDay('Evening');
+      setTimeOfDay("Evening");
     }
-    setCurrentDate(currentDate)
+    setCurrentDate(currentDate);
   }, []);
 
   return (
     <>
       <div className="flex h-screen overflow-hidden">
-        <Sidebar />
+        <Sidebar name={user.name} createdAt={user.createdAt} profilePicture={user.profilePicture}/>
         <div className="w-[100%] md:w-[60%] lg:w-[60%] border-l-2 border-r-2 overflow-auto">
           <div className="sticky top-0 bg-white dark:bg-background">
             <div className="px-5 py-8">

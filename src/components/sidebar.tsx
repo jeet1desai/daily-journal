@@ -9,8 +9,9 @@ import { Calendar } from "./ui/calendar";
 import { Button } from "./ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
 
-const Sidebar = () => {
+const Sidebar = ({ name, createdAt, profilePicture }: { name: string; createdAt: string; profilePicture: string }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -23,7 +24,7 @@ const Sidebar = () => {
       if (!userId) {
         router.push(`/login`);
       } else {
-        setUserId(userId)
+        setUserId(userId);
       }
     }
   }, [router]);
@@ -43,12 +44,12 @@ const Sidebar = () => {
     <div className="hidden md:flex md:w-[40%] lg:w-[20%] py-5 px-4 flex flex-col justify-between items-center">
       <div className="w-full lg:w-[80%] flex flex-col justify-start items-center gap-[20px]">
         <Avatar className="h-20 w-20">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={profilePicture} alt={name} />
+          <AvatarFallback>{name.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className="text-center">
-          <h1 className="text-gray-gray1k font-semibold text-base">Jeet Desai</h1>
-          <span className="text-gray-gray5 text-xs">Joined at 12 Jan 2023</span>
+          <h1 className="text-gray-gray1k font-semibold text-base">{name}</h1>
+          <span className="text-gray-gray5 text-xs">Joined at {dayjs(createdAt).format("DD MMM YYYY")}</span>
         </div>
         <div className="w-full">
           <div className="grid grid-flow-row auto-rows-max text-sm gap-2">

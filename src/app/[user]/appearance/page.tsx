@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BottomNavigation from "@/components/bottom-navigation";
 import Sidebar from "@/components/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -9,15 +9,39 @@ import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Appearance = () => {
   const { theme, setTheme } = useTheme();
 
   const [c_theme, setCTheme] = useState(theme ?? "light");
 
+  const [user, setUser] = useState({
+    name: "",
+    profilePicture: "",
+    createdAt: "",
+  });
+
+  const getAccountDetails = async () => {
+    try {
+      const response = await axios.get("../api/user");
+      setUser((prev) => ({
+        ...prev,
+        ...response.data.user,
+      }));
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getAccountDetails();
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar />
+      <Sidebar name={user.name} createdAt={user.createdAt} profilePicture={user.profilePicture}/>
       <div className="w-[100%] md:w-[70%] lg:w-[80%] border-l-2 border-r-2">
         <div className="overflow-hidden">
           <div className="sticky top-0 bg-white dark:bg-background">
