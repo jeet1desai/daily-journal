@@ -14,3 +14,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const reqBody = await request.json();
+    const { name, profilePicture } = reqBody;
+
+    const userId = await getDataFromToken(request);
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return NextResponse.json({ error: "User is not exist!" }, { status: 400 });
+    }
+
+    user.name = name;
+    user.profilePicture = profilePicture;
+    await user.save();
+
+    return NextResponse.json({ message: "User updated", success: true, user: user }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
