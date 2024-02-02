@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
@@ -8,19 +10,18 @@ import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/react/style.css";
 import { useTheme } from "next-themes";
 
-const initialContent: string | null = "";
-
-const Daily = ({ isOpen, handleOpen }: any) => {
+const Daily = ({ isOpen, handleOpen, handleSubmit }: any) => {
   const { theme } = useTheme();
 
-  const editor: BlockNoteEditor = useBlockNote({
-    // If the editor contents were previously saved, restores them.
-    initialContent: initialContent ? JSON.parse(initialContent) : undefined,
-    // Serializes and saves the editor contents to local storage.
-    onEditorContentChange: (editor) => {
-      console.log(JSON.stringify(editor.topLevelBlocks));
+  const [formValue, setFormValue] = useState({
+    title: "",
+    content: "",
+  });
 
-      localStorage.setItem("editorContent", JSON.stringify(editor.topLevelBlocks));
+  const editor: BlockNoteEditor = useBlockNote({
+    initialContent: formValue.content ? JSON.parse(formValue.content) : undefined,
+    onEditorContentChange: (editor) => {
+      setFormValue((prev) => ({ ...prev, content: JSON.stringify(editor.topLevelBlocks) }));
     },
   });
 
@@ -35,17 +36,14 @@ const Daily = ({ isOpen, handleOpen }: any) => {
             <Label htmlFor="title" className="sr-only">
               Title
             </Label>
-            <Input id="title" placeholder="12/12/1212 or Title" />
+            <Input id="title" placeholder="12/12/1212 or Title" onChange={(e) => setFormValue((prev) => ({ ...prev, title: e.target.value }))} />
           </div>
         </div>
         <div className="flex items-center space-x-2 rounded-md border py-1 shadow-sm">
-          <BlockNoteView
-            editor={editor}
-            theme={theme === "dark" ? "dark" : "light"}
-          />
+          <BlockNoteView editor={editor} theme={theme === "dark" ? "dark" : "light"} />
         </div>
         <DialogFooter className="sm:justify-end">
-          <Button type="button" variant="secondary">
+          <Button type="button" variant="secondary" disabled={formValue.title.length === 0 || formValue.content.length === 0} onClick={() => handleSubmit(formValue)}>
             Submit
           </Button>
         </DialogFooter>

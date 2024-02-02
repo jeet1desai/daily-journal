@@ -17,6 +17,8 @@ const UserBlog = () => {
   const [timeOfDay, setTimeOfDay] = useState("");
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
+  const [post, setPost] = useState<any[]>([]);
+
   const [user, setUser] = useState({
     name: "",
     profilePicture: "",
@@ -37,6 +39,7 @@ const UserBlog = () => {
 
   useEffect(() => {
     getAccountDetails();
+    getAllPost();
 
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
@@ -51,11 +54,37 @@ const UserBlog = () => {
     setCurrentDate(currentDate);
   }, []);
 
+  const getAllPost = async () => {
+    try {
+      const response = await axios.get("../api/note");
+      if (response.data.post.length === 0) {
+        toast.error("Post not found");
+      } else {
+        setPost(response.data.post);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleSubmit = async (values: any) => {
+    try {
+      const response = await axios.post("../api/note", {
+        title: values.title,
+        content: values.content,
+      });
+      toast.success(response.data.message);
+      setDailyDialog(false);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <>
       <div className="flex h-screen overflow-hidden">
-        <Sidebar name={user.name} createdAt={user.createdAt} profilePicture={user.profilePicture}/>
-        <div className="w-[100%] md:w-[60%] lg:w-[60%] border-l-2 border-r-2 overflow-auto">
+        <Sidebar name={user.name} createdAt={user.createdAt} profilePicture={user.profilePicture} />
+        <div className="w-[100%] md:w-[60%] lg:w-[55%] border-l-2 border-r-2 overflow-auto">
           <div className="sticky top-0 bg-white dark:bg-background">
             <div className="px-5 py-8">
               <h1 className="text-black text-3xl font-bold dark:text-primary mb-2">Good {timeOfDay},</h1>
@@ -70,42 +99,21 @@ const UserBlog = () => {
           </div>
           <div className="px-5 my-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6">
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
-              <JournalCard />
+              {post.map((post) => {
+                return <JournalCard key={post._id} title={post.title} />;
+              })}
             </div>
           </div>
           <BottomNavigation />
         </div>
-        <div className="hidden lg:block w-[20%] p-5">
+        <div className="hidden lg:block w-[25%] p-5">
           <div className="flex justify-left">
             <Calendar mode="single" className="rounded-md border shadow" />
           </div>
         </div>
       </div>
 
-      <Daily isOpen={isDialogDialogOpen} handleOpen={setDailyDialog} />
+      <Daily isOpen={isDialogDialogOpen} handleOpen={setDailyDialog} handleSubmit={handleSubmit} />
     </>
   );
 };

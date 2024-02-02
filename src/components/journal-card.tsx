@@ -1,17 +1,19 @@
+"use client";
+
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardHeader, CardTitle } from "./ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 
-const JournalCard = () => {
+const JournalCard = ({ title }: any) => {
   return (
     <Card>
       <CardHeader className="flex justify-between items-center flex-row py-3">
-        <CardTitle className="text-ellipsis overflow-hidden line-clamp-1">12 Jan 1212</CardTitle>
+        <CardTitle className="text-ellipsis overflow-hidden line-clamp-1">{title}</CardTitle>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" style={{ margin: 0 }}>
               <DotsVerticalIcon />
               <span className="sr-only">Edit Delete Menu</span>
             </Button>
@@ -22,9 +24,6 @@ const JournalCard = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>
-      <CardContent>
-        <p className="text-ellipsis overflow-hidden line-clamp-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla sint, reiciendis quisquam corporis soluta modi delectus odio molestiae doloribus et officia magnam quaerat similique nam ipsa temporibus ducimus numquam voluptate!</p>
-      </CardContent>
     </Card>
   );
 };
