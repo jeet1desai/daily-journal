@@ -13,11 +13,17 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const UserBlog = () => {
-  const [isDialogDialogOpen, setDailyDialog] = useState(false);
+  const [isDailyDialogOpen, setDailyDialog] = useState(false);
   const [timeOfDay, setTimeOfDay] = useState("");
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   const [post, setPost] = useState<any[]>([]);
+
+  const [editId, setEditId] = useState(null);
+  const [editValue, setEditValue] = useState({
+    title: "",
+    content: "",
+  });
 
   const [user, setUser] = useState({
     name: "",
@@ -74,10 +80,37 @@ const UserBlog = () => {
         content: values.content,
       });
       toast.success(response.data.message);
+      setPost([...post, response.data.savedPost]);
       setDailyDialog(false);
     } catch (error: any) {
       toast.error(error.message);
     }
+  };
+
+  const handleEdit = async (values: any) => {
+    try {
+      const response = await axios.put("../api/note", {
+        title: values.title,
+        content: values.content,
+        id: editId,
+      });
+      const newPostList = post.map((post: any) => (post._id === response.data.note._id ? response.data.note : post));
+      setPost(newPostList);
+      toast.success(response.data.message);
+      setDailyDialog(false);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleOpenEdit = (post: any) => {
+    setEditId(post._id);
+    setEditValue((prev) => ({
+      ...prev,
+      title: post.title,
+      content: post.content,
+    }));
+    setDailyDialog(true);
   };
 
   return (
@@ -93,14 +126,25 @@ const UserBlog = () => {
             <Separator />
             <div className="my-5 mx-4 flex gap-[30px]">
               <Input placeholder="Search by title" type="text" />
-              <Button onClick={() => setDailyDialog(true)}>Add</Button>
+              <Button
+                onClick={() => {
+                  setEditValue({
+                    title: "",
+                    content: "",
+                  });
+                  setEditId(null);
+                  setDailyDialog(true);
+                }}
+              >
+                Add
+              </Button>
             </div>
             <Separator />
           </div>
           <div className="px-5 my-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6">
               {post.map((post) => {
-                return <JournalCard key={post._id} title={post.title} />;
+                return <JournalCard key={post._id} title={post.title} handleOpenEdit={() => handleOpenEdit(post)} />;
               })}
             </div>
           </div>
@@ -113,7 +157,7 @@ const UserBlog = () => {
         </div>
       </div>
 
-      <Daily isOpen={isDialogDialogOpen} handleOpen={setDailyDialog} handleSubmit={handleSubmit} />
+      {isDailyDialogOpen && <Daily id={editId} value={editValue} isOpen={isDailyDialogOpen} handleOpen={setDailyDialog} handleSubmit={handleSubmit} handleEdit={handleEdit} />}
     </>
   );
 };
