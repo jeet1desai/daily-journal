@@ -15,7 +15,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "User is not exist!" }, { status: 400 });
     }
 
-    const list = await Note.find({ user: userId });
+    const searchParam = request.nextUrl.searchParams;
+    const title = searchParam.get("title");
+
+    let filter: any = { user: userId };
+    if (title) {
+      filter.title = { $regex: new RegExp(title, "i") };
+    }
+
+    const list = await Note.find(filter);
     return NextResponse.json({ message: "Posts found", success: true, post: list }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -67,30 +75,3 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
-// export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-//   try {
-
-//     console.log(params);
-    
-//     // const reqBody = await request.json();
-//     // const { id } = reqBody;
-
-//     const userId = await getDataFromToken(request);
-//     const user = await User.findOne({ _id: userId });
-//     if (!user) {
-//       return NextResponse.json({ error: "User is not exist!" }, { status: 400 });
-//     }
-
-//     const noteObjectId = new mongoose.Types.ObjectId(params.id);
-//     const note = await Note.findOneAndDelete({ _id: noteObjectId });
-
-//     if (!note) {
-//       return NextResponse.json({ error: "Note is not exist!" }, { status: 400 });
-//     }
-
-//     return NextResponse.json({ message: "Post is created", success: true, note }, { status: 201 });
-//   } catch (error: any) {
-//     return NextResponse.json({ error: error.message }, { status: 500 });
-//   }
-// }

@@ -45,7 +45,7 @@ const UserBlog = () => {
 
   useEffect(() => {
     getAccountDetails();
-    getAllPost();
+    getAllPost("");
 
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
@@ -60,11 +60,12 @@ const UserBlog = () => {
     setCurrentDate(currentDate);
   }, []);
 
-  const getAllPost = async () => {
+  const getAllPost = async (search: string) => {
     try {
-      const response = await axios.get("../api/note");
+      const response = await axios.get(`../api/note?title=${search}`);
       if (response.data.post.length === 0) {
         toast.error("Post not found");
+        setPost([]);
       } else {
         setPost(response.data.post);
       }
@@ -137,7 +138,7 @@ const UserBlog = () => {
             </div>
             <Separator />
             <div className="my-5 mx-4 flex gap-[30px]">
-              <Input placeholder="Search by title" type="text" />
+              <Input placeholder="Search by title" type="text" onChange={(e) => getAllPost(e.target.value) } />
               <Button
                 onClick={() => {
                   setEditValue({
