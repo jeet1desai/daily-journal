@@ -32,8 +32,6 @@ const Daily = ({ id, value, isOpen, handleOpen, handleSubmit, handleEdit }: any)
     },
   });
 
-  console.log(editor);
-
   return (
     <Dialog open={isOpen} onOpenChange={() => handleOpen(false)}>
       <DialogContent className="max-w-4xl">

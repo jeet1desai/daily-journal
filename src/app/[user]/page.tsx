@@ -103,6 +103,18 @@ const UserBlog = () => {
     }
   };
 
+  const handleDelete = async (id: any) => {
+    try {
+      const response = await axios.delete(`../api/note/${id}`);
+      const newPostList = post.filter((post: any) => post._id !== response.data.note._id);
+      setPost(newPostList);
+      toast.success(response.data.message);
+      setDailyDialog(false);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   const handleOpenEdit = (post: any) => {
     setEditId(post._id);
     setEditValue((prev) => ({
@@ -144,7 +156,7 @@ const UserBlog = () => {
           <div className="px-5 my-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6">
               {post.map((post) => {
-                return <JournalCard key={post._id} title={post.title} handleOpenEdit={() => handleOpenEdit(post)} />;
+                return <JournalCard key={post._id} title={post.title} handleOpenEdit={() => handleOpenEdit(post)} handleDelete={() => handleDelete(post._id)} />;
               })}
             </div>
           </div>

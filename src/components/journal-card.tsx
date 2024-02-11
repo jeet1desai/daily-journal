@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "./ui/button";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 
-const JournalCard = ({ title, handleOpenEdit }: any) => {
+const JournalCard = ({ title, handleOpenEdit, handleDelete }: any) => {
   return (
     <Card>
       <CardHeader className="flex justify-between items-center flex-row py-3">
@@ -20,7 +20,7 @@ const JournalCard = ({ title, handleOpenEdit }: any) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={handleOpenEdit}>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>

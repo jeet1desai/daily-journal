@@ -67,3 +67,30 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+// export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+//   try {
+
+//     console.log(params);
+    
+//     // const reqBody = await request.json();
+//     // const { id } = reqBody;
+
+//     const userId = await getDataFromToken(request);
+//     const user = await User.findOne({ _id: userId });
+//     if (!user) {
+//       return NextResponse.json({ error: "User is not exist!" }, { status: 400 });
+//     }
+
+//     const noteObjectId = new mongoose.Types.ObjectId(params.id);
+//     const note = await Note.findOneAndDelete({ _id: noteObjectId });
+
+//     if (!note) {
+//       return NextResponse.json({ error: "Note is not exist!" }, { status: 400 });
+//     }
+
+//     return NextResponse.json({ message: "Post is created", success: true, note }, { status: 201 });
+//   } catch (error: any) {
+//     return NextResponse.json({ error: error.message }, { status: 500 });
+//   }
+// }
